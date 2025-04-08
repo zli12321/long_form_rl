@@ -1,14 +1,32 @@
 import torch, json, re, ray
-from qa_metrics.transformerMatcher import TransformerMatcher
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 # Create the large object and put it in Ray's object store.
 @ray.remote(num_gpus=1)
 class TransformerModelActor:
     def __init__(self):
-        self.tm = TransformerMatcher("zli12321/answer_equivalence_bert")
+        self.device = 'cuda'
+        self.tokenizer = AutoTokenizer.from_pretrained('Ray2333/GRM-Llama3.2-3B-rewardmodel-ft')
+        self.reward_model = AutoModelForSequenceClassification.from_pretrained(
+                        'Ray2333/GRM-Llama3.2-3B-rewardmodel-ft', torch_dtype=torch.float16, 
+                        device_map=self.device,
+                        )
+        self.kwargs = {"padding": 'longest', "truncation": True, "return_tensors": "pt"}
     
-    def compute_score(self, extracted_answer, label, prompt_last_line):
-        return self.tm.get_score(extracted_answer, label, prompt_last_line)
+    def compute_score(self, message, response):
+        message = [
+        {'role': 'user', 'content': message},
+        {'role': 'assistant', 'content': response}
+        ]
+
+        message_template = self.tokenizer.apply_chat_template(message, tokenize=False)
+        tokens = self.tokenizer.encode_plus(message_template, **self.kwargs)
+
+        with torch.no_grad():
+            reward_tensor = self.reward_model(tokens["input_ids"][0].view(1,-1).to(self.device), attention_mask=tokens["attention_mask"][0].view(1,-1).to(self.device))[0]
+            reward = reward_tensor.cpu().detach().item()
+
+        return reward
     
 # Instantiate the actor once
 tm_actor = TransformerModelActor.remote()
@@ -18,7 +36,7 @@ def get_last_line(text: str) -> str:
     last_line = '\n'.join(lines[-1:])
     return last_line
 
-def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/completions/el5/el5-bem.jsonl"):
+def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/completions/el5/0.5B/el5-grm-3b.jsonl"):
     """
     For each example:
       1. Extracts the response by removing the prompt from the query.
@@ -40,7 +58,6 @@ def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/
         torch.Tensor: A tensor of computed scores for each example.
     """
     # Use the global reference if no reference was passed.
-    # tm = TransformerMatcher("zli12321/answer_equivalence_bert")
     rewards = []
     
     with open(save_path, "a") as file:
@@ -60,7 +77,7 @@ def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/
 
             # Compute the pedant score using the large object.
             # pedant_score = tm.get_score(extracted_answer, label, get_last_line(prompt))
-            pedant_score = ray.get(tm_actor.compute_score.remote(extracted_answer, label, get_last_line(prompt)))
+            pedant_score = ray.get(tm_actor.compute_score.remote(prompt, response))
             rewards.append(pedant_score)
 
             # Save the data as a JSON object in the JSONL file.
@@ -74,22 +91,3 @@ def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/
             file.write(json.dumps(data_dict) + "\n")
     
     return torch.tensor(rewards)
-
-
-# Example usage:
-# if __name__ == "__main__":
-#     queries = [
-#         "Hello, how are you? <think> I am thinking... </think>\n<answer> I'm fine, thank you.</answer>",
-#         "Hi there! What's the weather like? <think> Considering the forecast... </think>\n<answer> It's sunny and warm.</answer>"
-#     ]
-#     prompts = [
-#         "Hello, how are you?",
-#         "Hi there! What's the weather like?"
-#     ]
-#     labels = [
-#         "I'm fine, thank you.",
-#         "It's sunny and warm."
-#     ]
-    
-#     reward_scores = reward_func(queries, prompts, labels)
-#     print("Reward scores:", reward_scores)

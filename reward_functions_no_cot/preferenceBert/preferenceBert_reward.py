@@ -109,7 +109,7 @@ class TransformerModelActor:
 # Instantiate the actor once.
 tm_actor = TransformerModelActor.remote()
 
-def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/completions/el5/3B/el5-preferenceBert.jsonl"):
+def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/completions/el5/1.5B-no-cot-mixed/el5-preferenceBert.jsonl"):
     """
     Computes scores for each example using the Ray actor.
     """

@@ -6,10 +6,17 @@ module load cuda
 module load gcc/11.2.0
 
 set -x
+rm -r /tmp/ray/*
+ls /tmp/ray/
 
 # Start ray
 # wandn key 5e11bfa8cf4062940486d279ecd9e70617d4ac7a
 # export RAY_TMPDIR=/tmp/r
+export TRANSFORMERS_CACHE=/fs/clip-scratch/lizongxia
+export HF_HOME=/fs/clip-scratch/lizongxia
+export RAY_TMPDIR=/fs/clip-scratch/lizongxia/tmp/ray
+
+
 ray start --head --node-ip-address 0.0.0.0 --num-gpus 4
 
 
@@ -24,9 +31,9 @@ ray job submit --address="http://127.0.0.1:8265" \
   --actor_num_gpus_per_node 1 \
   --vllm_num_engines 1 \
   --vllm_tensor_parallel_size 1 \
-  --pretrain /fs/nexus-scratch/zli12321/active-topic-modeling/LLaMA-Factory/saves/qwen-0.5B-mixed_reasoning/full/sft \
-  --remote_rm_url /fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/reward_functions/rougeL_reward.py \
-  --save_path /fs/clip-scratch/lizongxia/grpo_weights/el5/rougeL \
+  --pretrain /fs/clip-scratch/lizongxia/models--Qwen--Qwen2.5-3B-Instruct/snapshots/aa8e72537993ba99e69dfaafa59ed015b17504d1 \
+  --remote_rm_url /fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/reward_functions/rougeL/rougeL_reward.py \
+  --save_path /fs/clip-scratch/lizongxia/grpo_weights/el5/Qwen-3B/rougeL \
   --micro_train_batch_size 4 \
   --train_batch_size 128 \
   --micro_rollout_batch_size 4 \
@@ -54,5 +61,5 @@ ray job submit --address="http://127.0.0.1:8265" \
   --gradient_checkpointing \
   --packing_samples \
   --use_wandb 5e11bfa8cf4062940486d279ecd9e70617d4ac7a \
-  --save_steps 12 \
+  --save_steps -1 \
   --enable_prefix_caching

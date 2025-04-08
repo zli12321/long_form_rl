@@ -8,16 +8,20 @@ module load gcc/11.2.0
 set -x
 rm -r /tmp/ray/*
 ls /tmp/ray/
+
 # Start ray
 # wandn key 5e11bfa8cf4062940486d279ecd9e70617d4ac7a
+# export RAY_TMPDIR=/tmp/r
 export TRANSFORMERS_CACHE=/fs/clip-scratch/lizongxia
 export HF_HOME=/fs/clip-scratch/lizongxia
 export RAY_TMPDIR=/fs/clip-scratch/lizongxia/tmp/ray
+
+
 ray start --head --node-ip-address 0.0.0.0 --num-gpus 4
 
 
 ray job submit --address="http://127.0.0.1:8265" \
-  --runtime-env-json='{"working_dir": "/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/scripts"}' \
+  --runtime-env-json='{"working_dir": "/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/scripts/no-cot"}' \
   -- python3 -m openrlhf.cli.train_ppo_ray \
   --ref_num_nodes 1 \
   --ref_num_gpus_per_node 1 \
@@ -28,8 +32,8 @@ ray job submit --address="http://127.0.0.1:8265" \
   --vllm_num_engines 1 \
   --vllm_tensor_parallel_size 1 \
   --pretrain /fs/clip-scratch/lizongxia/models--Qwen--Qwen2.5-1.5B-Instruct/snapshots/989aa7980e4cf806f80c7fef2b1adb7bc71aa306 \
-  --remote_rm_url /fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/reward_functions/bertscore/bertscore_reward.py \
-  --save_path /fs/clip-scratch/lizongxia/grpo_weights/el5/1.5B/bertscore \
+  --remote_rm_url /fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/reward_functions_no_cot/rougeL/rougeL_reward.py \
+  --save_path /fs/clip-scratch/lizongxia/grpo_weights/el5/Qwen-1.5B-no-cot-mixed/rougeL \
   --micro_train_batch_size 4 \
   --train_batch_size 128 \
   --micro_rollout_batch_size 4 \
@@ -47,7 +51,7 @@ ray job submit --address="http://127.0.0.1:8265" \
   --zero_stage 3 \
   --bf16 \
   --actor_learning_rate 1e-6 \
-  --prompt_data zli12321/el5 \
+  --prompt_data zli12321/mixed_long_form \
   --apply_chat_template \
   --input_key prompt \
   --label_key ground_truth \
@@ -57,5 +61,5 @@ ray job submit --address="http://127.0.0.1:8265" \
   --gradient_checkpointing \
   --packing_samples \
   --use_wandb 5e11bfa8cf4062940486d279ecd9e70617d4ac7a \
-  --save_steps 12 \
+  --save_steps -1 \
   --enable_prefix_caching
