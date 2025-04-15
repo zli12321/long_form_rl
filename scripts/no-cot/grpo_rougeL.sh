@@ -31,9 +31,9 @@ ray job submit --address="http://127.0.0.1:8265" \
   --actor_num_gpus_per_node 1 \
   --vllm_num_engines 1 \
   --vllm_tensor_parallel_size 1 \
-  --pretrain /fs/clip-scratch/lizongxia/models--Qwen--Qwen2.5-1.5B-Instruct/snapshots/989aa7980e4cf806f80c7fef2b1adb7bc71aa306 \
+  --pretrain /fs/clip-scratch/lizongxia/models--Qwen--Qwen2.5-3B-Instruct/snapshots/aa8e72537993ba99e69dfaafa59ed015b17504d1 \
   --remote_rm_url /fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/reward_functions_no_cot/rougeL/rougeL_reward.py \
-  --save_path /fs/clip-scratch/lizongxia/grpo_weights/el5/Qwen-1.5B-no-cot-mixed/rougeL \
+  --save_path /fs/clip-scratch/lizongxia/grpo_weights/el5/Qwen-3B-no-cot-mixed/rougeL \
   --micro_train_batch_size 4 \
   --train_batch_size 128 \
   --micro_rollout_batch_size 4 \

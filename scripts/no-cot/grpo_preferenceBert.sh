@@ -30,7 +30,7 @@ ray job submit --address="http://127.0.0.1:8265" \
   --vllm_tensor_parallel_size 1 \
   --pretrain /fs/clip-scratch/lizongxia/models--Qwen--Qwen2.5-1.5B-Instruct/snapshots/989aa7980e4cf806f80c7fef2b1adb7bc71aa306 \
   --remote_rm_url /fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/reward_functions_no_cot/preferenceBert/preferenceBert_reward.py \
-  --save_path /fs/clip-scratch/lizongxia/grpo_weights/el5/Qwen-1.5B-no-cot/preferenceBert \
+  --save_path /fs/clip-scratch/lizongxia/grpo_weights/el5/Qwen-1.5B-no-cot-mixed/preferenceBert \
   --micro_train_batch_size 4 \
   --train_batch_size 128 \
   --micro_rollout_batch_size 4 \
@@ -48,7 +48,7 @@ ray job submit --address="http://127.0.0.1:8265" \
   --zero_stage 3 \
   --bf16 \
   --actor_learning_rate 1e-6 \
-  --prompt_data zli12321/el5_no_cot \
+  --prompt_data zli12321/mixed_long_form \
   --apply_chat_template \
   --input_key prompt \
   --label_key ground_truth \

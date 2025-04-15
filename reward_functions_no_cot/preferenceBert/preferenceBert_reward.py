@@ -62,7 +62,7 @@ def load_model_and_tokenizer_from_folder(checkpoint_folder, base_model_name="ans
     return model, tokenizer
 
 def get_score(model, tokenizer, reference, generated_response, device=None):
-    MAX_LENGTH = 1024
+    MAX_LENGTH = 2048
     if device is None:
         device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     
@@ -95,8 +95,8 @@ def get_last_line(text: str) -> str:
 class TransformerModelActor:
     def __init__(self):
         checkpoint_folder = os.path.join(
-            "/fs/nexus-scratch/zli12321/active-topic-modeling/reward_model_tune/checkpoints",
-            "checkpoint-epoch-4"
+            "/fs/nexus-scratch/zli12321/active-topic-modeling/reward_model_tune/modernbert_checkpoints",
+            "checkpoint-epoch-3"
         )
         self.model, self.tokenizer = load_model_and_tokenizer_from_folder(
             checkpoint_folder, base_model_name="answerdotai/ModernBERT-base"
