@@ -159,7 +159,7 @@ model_pipeline = Pipeline([
     ('regressor', NormalizedRidgeRegressor(alpha=1.0))
 ])
 
-def load_model(model_path='/fs/nexus-scratch/zli12321/active-topic-modeling/reward_model_tune/lr_checkpoints/model_pipeline.pkl'):
+def load_model(model_path='./lr_checkpoints/model_pipeline.pkl'):
     """
     Load the saved model pipeline from disk.
 

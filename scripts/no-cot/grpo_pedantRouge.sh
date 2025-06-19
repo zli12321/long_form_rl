@@ -9,25 +9,24 @@ set -x
 rm -r /tmp/ray/*
 ls /tmp/ray/
 # Start ray
-# wandn key 5e11bfa8cf4062940486d279ecd9e70617d4ac7a
 export RAY_TMPDIR=/fs/clip-scratch/lizongxia/tmp/ray
 ray start --head --node-ip-address 0.0.0.0 --num-gpus 4
 
 
 ray job submit --address="http://127.0.0.1:8265" \
-  --runtime-env-json='{"working_dir": "/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/scripts/no-cot"}' \
+  --runtime-env-json='{"working_dir": "long_form_rl/scripts/no-cot"}' \
   -- python3 -m openrlhf.cli.train_ppo_ray \
   --ref_num_nodes 1 \
   --ref_num_gpus_per_node 1 \
   --reward_num_nodes 0 \
   --reward_num_gpus_per_node 0 \
-  --actor_num_nodes 1 \
+  --actor_num_nodes 2 \
   --actor_num_gpus_per_node 1 \
   --vllm_num_engines 1 \
   --vllm_tensor_parallel_size 1 \
-  --pretrain /fs/clip-scratch/lizongxia/models--Qwen--Qwen2.5-1.5B-Instruct/snapshots/989aa7980e4cf806f80c7fef2b1adb7bc71aa306 \
-  --remote_rm_url /fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/reward_functions_no_cot/rougePedant/rougePedant_reward.py \
-  --save_path /fs/clip-scratch/lizongxia/grpo_weights/el5/Qwen-1.5B-no-cot-mixed/rougePedant-penalty \
+  --pretrain Qwen/Qwen2.5-3B-Instruct \
+  --remote_rm_url ../../reward_functions_no_cot/rougePedant/rougePedant_reward.py \
+  --save_path ../../grpo_weights/el5/Qwen-3B-no-cot-mixed/rougePedant-penalty \
   --micro_train_batch_size 4 \
   --train_batch_size 128 \
   --micro_rollout_batch_size 4 \
@@ -54,6 +53,6 @@ ray job submit --address="http://127.0.0.1:8265" \
   --flash_attn \
   --gradient_checkpointing \
   --packing_samples \
-  --use_wandb 5e11bfa8cf4062940486d279ecd9e70617d4ac7a \
+  --use_wandb YOUR_WANDB_KEY_HERE \
   --save_steps -1 \
   --enable_prefix_caching

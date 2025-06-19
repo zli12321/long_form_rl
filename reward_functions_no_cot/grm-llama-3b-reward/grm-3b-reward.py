@@ -1,7 +1,11 @@
-import torch, json, re, ray
+import torch, json, re, ray, math
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 # Create the large object and put it in Ray's object store.
+def normalize_sigmoid(r: float) -> float:
+    """Map any real r to (0,1) with a sigmoid."""
+    return 1.0 / (1.0 + math.exp(-r))
+
 @ray.remote(num_gpus=1)
 class TransformerModelActor:
     def __init__(self):
@@ -26,7 +30,7 @@ class TransformerModelActor:
             reward_tensor = self.reward_model(tokens["input_ids"][0].view(1,-1).to(self.device), attention_mask=tokens["attention_mask"][0].view(1,-1).to(self.device))[0]
             reward = reward_tensor.cpu().detach().item()
 
-        return reward
+        return normalize_sigmoid(reward)
     
 # Instantiate the actor once
 tm_actor = TransformerModelActor.remote()
@@ -36,7 +40,7 @@ def get_last_line(text: str) -> str:
     last_line = '\n'.join(lines[-1:])
     return last_line
 
-def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/completions/el5/1.5B-no-cot-mixed/el5-grm-3b.jsonl"):
+def reward_func(queries, prompts, labels, save_path="../../completions/el5/3B-no-cot-mixed/el5-grm-3b-sigmoid.jsonl"):
     """
     For each example:
       1. Extracts the response by removing the prompt from the query.

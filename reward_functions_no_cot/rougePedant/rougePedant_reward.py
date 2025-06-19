@@ -114,7 +114,7 @@ class TransformerModelActor:
         __main__.NormalizedRidgeRegressor = TransformerModelActor.NormalizedRidgeRegressor
 
         # Path to the saved model pipeline.
-        model_path = '/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/reward_functions_no_cot/rougePedant/lr_checkpoints/model_pipeline.pkl'
+        model_path = './lr_checkpoints/model_pipeline.pkl'
         self.model = joblib.load(model_path)
     
     def compute_score(self, reference_answer, candidate_answer):
@@ -152,7 +152,7 @@ def get_last_line(text: str) -> str:
     
     return last_line
 
-def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/completions/el5/1.5B-no-cot-mixed/el5-rougePedant-penalty.jsonl"):
+def reward_func(queries, prompts, labels, save_path="../../completions/el5/3B-no-cot-mixed/el5-rougePedant-penalty.jsonl"):
     """
     For each example:
       1. Extracts the response by removing the prompt from the query.

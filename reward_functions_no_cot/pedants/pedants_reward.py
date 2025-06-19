@@ -17,7 +17,7 @@ def get_last_line(text: str) -> str:
     
     return last_line
 
-def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/completions/el5/el5-pedants.jsonl"):
+def reward_func(queries, prompts, labels, save_path="../../completions/el5/3B-no-cot-mixed/el5-pedants.jsonl"):
     """
     For each example:
       1. Extracts the response by removing the prompt from the query.

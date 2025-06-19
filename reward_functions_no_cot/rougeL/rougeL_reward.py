@@ -1,7 +1,7 @@
 import torch, json, re
 from rouge_score import rouge_scorer
 
-def reward_func(queries, prompts, labels, save_path="/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/completions/el5/3B-no-cot-mixed/el5-rougeL.jsonl"):
+def reward_func(queries, prompts, labels, save_path="../../completions/el5/3B-no-cot-mixed/el5-rougeL.jsonl"):
     """
     For each example:
       1. Extracts the response by removing the prompt from the query.

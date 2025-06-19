@@ -19,7 +19,7 @@ class BERTScoreActor:
 bert_actor = BERTScoreActor.remote()
 
 def reward_func(queries, prompts, labels,
-                save_path="/fs/nexus-scratch/zli12321/active-topic-modeling/deepresearch/openrlhf_rl/completions/el5/3B-no-cot-mixed/el5-bertscore.jsonl"):
+                save_path="../../completions/el5/3B-no-cot-mixed/el5-bertscore.jsonl"):
     """
     For each example:
       1. Extracts the response by removing the prompt from the query.
