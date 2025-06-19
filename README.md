@@ -1,4 +1,4 @@
-# Free Form RL Training
+# Free Form R1 Training
 
 This repository contains the code and resources for training models on long-form reinforcement learning tasks.
 
