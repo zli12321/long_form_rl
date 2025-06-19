@@ -1,8 +1,10 @@
 # Free Form R1 Training
 
-This repository contains the code and resources for training models on long-form reinforcement learning tasks.
+This repository contains the code and resources for training models on long-form reinforcement learning tasks for our paper **Semantically-Aware Rewards for Open-Ended R1 Training in Free-Form Generation**.
 
-[[📖 Semantically-Aware Rewards for Open-Ended R1 Training in Free-Form Generation](http://arxiv.org/abs/2506.15068)]
+
+
+[[📖Paper](http://arxiv.org/abs/2506.15068)]
 [[🤗RewardBERTModel](https://huggingface.co/IntelligenceLab/RewardPreferenceBert)]
 
 ## 🚀 Getting Started
