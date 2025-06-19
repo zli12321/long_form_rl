@@ -2,7 +2,7 @@
 
 This repository contains the code and resources for training models on long-form reinforcement learning tasks.
 
-[[📖 Paper](http://arxiv.org/abs/2506.15068)]
+[[📖 Semantically-Aware Rewards for Open-Ended R1 Training in Free-Form Generation](http://arxiv.org/abs/2506.15068)]
 
 ## 🚀 Getting Started
 
