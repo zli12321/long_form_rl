@@ -1,0 +1,64 @@
+{
+  "citation": "",
+  "description": "",
+  "features": {
+    "input": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "orig_reference_answer": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "orig_response": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "orig_score": {
+      "dtype": "float64",
+      "_type": "Value"
+    },
+    "orig_criteria": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "orig_score4_description": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "orig_instruction": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "orig_score1_description": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "orig_feedback": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "orig_score2_description": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "orig_score3_description": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "orig_score5_description": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "instruction": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "output": {
+      "dtype": "string",
+      "_type": "Value"
+    }
+  },
+  "homepage": "",
+  "license": ""
+}
