@@ -27,6 +27,12 @@ pip install -e .
 pip install qa-metrics
 ```
 
+## Training free-form reward model
+```
+cd train_reward_bert
+python reward_bert.py
+```
+
 ## 🏋️ Training
 
 Once the setup is complete, you can begin training the model using the provided scripts.
