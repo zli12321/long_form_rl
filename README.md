@@ -3,6 +3,10 @@
 This repository contains the code and resources for training models on long-form reinforcement learning tasks for our paper **Semantically-Aware Rewards for Open-Ended R1 Training in Free-Form Generation**.
 
 
+#### TODOs:
+- Upload dev dataset.
+- Upload sample model generated answers
+- Upload vllm response inference code
 
 [[📖Paper](http://arxiv.org/abs/2506.15068)]
 [[🤗RewardBERTModel](https://huggingface.co/IntelligenceLab/RewardPreferenceBert)]
