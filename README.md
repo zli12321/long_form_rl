@@ -10,6 +10,7 @@ This repository contains the code and resources for training models on long-form
 
 [[📖Paper](http://arxiv.org/abs/2506.15068)]
 [[🤗RewardBERTModel](https://huggingface.co/IntelligenceLab/RewardPreferenceBert)]
+[[Training Curves](https://wandb.ai/zli12321-university-of-maryland/openrlhf_train_ppo/runs/7p0z4mmy?nw=nwuserzli12321)]
 
 ## 🚀 Getting Started
 
